@@ -1,27 +1,26 @@
 package com.seroter.skincare_booking.api;
 
 import com.seroter.skincare_booking.model.Therapist;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@RequestMapping("/api/therapist")
 public class TherapistAPI {
 
     List<Therapist> therapists = new ArrayList<>();
 
-    @PostMapping("therapist")
-    public ResponseEntity createNewTherapist(@RequestBody Therapist therapist) {
+    @PostMapping
+    public ResponseEntity createNewTherapist(@Valid @RequestBody Therapist therapist) {
         therapists.add(therapist);
         return ResponseEntity.ok(therapist);
     }
 
-    @GetMapping("therapist")
+    @GetMapping
     public ResponseEntity getAllTherapists() {
         return ResponseEntity.ok(therapists);
     }

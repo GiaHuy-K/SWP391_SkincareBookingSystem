@@ -1,7 +1,6 @@
 package com.seroter.skincare_booking.api;
 
 import com.seroter.skincare_booking.model.Therapist;
-import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,13 +13,13 @@ public class TherapistAPI {
 
     List<Therapist> therapists = new ArrayList<>();
 
-    @PostMapping
-    public ResponseEntity createNewTherapist(@Valid @RequestBody Therapist therapist) {
+    @PostMapping("therapist")
+    public ResponseEntity createNewTherapist(@RequestBody Therapist therapist) {
         therapists.add(therapist);
         return ResponseEntity.ok(therapist);
     }
 
-    @GetMapping
+    @GetMapping("therapist")
     public ResponseEntity getAllTherapists() {
         return ResponseEntity.ok(therapists);
     }

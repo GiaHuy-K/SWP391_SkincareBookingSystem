@@ -1,24 +1,24 @@
 package com.seroter.skincare_booking.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-
-@Entity
-@Getter
-@Setter
-@AllArgsConstructor
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 public class Account {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public long AccountId;
+    public long id;
 
-    public String fullName;
-    public String Email;
-    public String Password;
+
+    @Pattern(regexp = "^[A-ZÀ-Ỹ][a-zà-ỹ]+(\s[A-ZÀ-Ỹ][a-zà-ỹ]+){1,}$",message = "Invalid full name!")
+    String fullName;
+
+
+    @Email(message = "Invalid Email")
+    String email;
+
+    @Pattern(regexp = "(84|0[3|5|7|8|9]) + (\\d{8})", message = "Invalid phone!")
+    String phone;
+
+
+    @Size(min = 6, message = "Password must be at least 6 character!")
+    String password;
 }

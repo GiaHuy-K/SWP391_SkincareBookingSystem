@@ -26,4 +26,8 @@ public class CustomerService {
         return customerRepository.save(customer);
 
     }
+
+    private void testCommit(){
+
+    }
 }

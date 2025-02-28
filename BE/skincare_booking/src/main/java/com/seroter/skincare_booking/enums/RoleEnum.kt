@@ -5,7 +5,6 @@ enum class RoleEnum {
     CUSTOMER,
     MANAGER,
     SKIN_THERAPIST;
-
 }
 enum class PaymentStatus {
     PENDING,

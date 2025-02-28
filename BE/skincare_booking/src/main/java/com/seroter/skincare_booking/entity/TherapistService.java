@@ -13,11 +13,13 @@ public class TherapistService {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JoinColumn(name = "therapistID", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "therapistID", referencedColumnName = "therapistID", nullable = false)
     private Therapist therapist;
 
     @ManyToOne
-    @JoinColumn(name = "serviceID", nullable = false)
+    @JoinColumn(name = "serviceID", referencedColumnName = "serviceID", nullable = false)
     private Service service;
 }
+
 

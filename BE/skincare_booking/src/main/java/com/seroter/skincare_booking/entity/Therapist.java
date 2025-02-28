@@ -4,22 +4,24 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
 
-    @Entity
-    @Getter
-    @Setter
-    @Table(name = "Therapist")
-    public class Therapist {
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private Long therapistID;
 
-        @Column(nullable = false, length = 100)
-        private String name;
+@Entity
+@Getter
+@Setter
+@Table(name = "Therapist")
+public class Therapist {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long therapistID;
 
-        @Column(nullable = false, length = 255)
-        private String qualification;
+    private String name;
+    private String qualification;
+    private String experience;
 
-        @Column(nullable = false, length = 50)
-        private String experience;
-    }
+    @OneToMany(mappedBy = "therapist", cascade = CascadeType.ALL)
+    private List<TherapistService> therapistServices;
+}
+
+

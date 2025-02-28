@@ -1,7 +1,6 @@
 package com.seroter.skincare_booking.api;
 
 import com.seroter.skincare_booking.model.Staff;
-import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,13 +13,13 @@ public class StaffAPI {
 
     List<Staff> staffs = new ArrayList<>();
 
-    @PostMapping
-    public ResponseEntity createNewStaff(@Valid @RequestBody Staff staff) {
+    @PostMapping("staff")
+    public ResponseEntity createNewStaff(@RequestBody Staff staff) {
         staffs.add(staff);
         return ResponseEntity.ok(staff);
     }
 
-    @GetMapping
+    @GetMapping("staff")
     public ResponseEntity getAllStaffs() {
         return ResponseEntity.ok(staffs);
     }

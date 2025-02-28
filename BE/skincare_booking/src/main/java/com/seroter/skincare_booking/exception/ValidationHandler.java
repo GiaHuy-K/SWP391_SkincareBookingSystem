@@ -7,16 +7,34 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.sql.SQLIntegrityConstraintViolationException;
+
 @RestControllerAdvice
 public class ValidationHandler {
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity handleValidation(MethodArgumentNotValidException exception){
+    // Canh bắt lỗi cho mình
+    // MethodArgumentNotValidException => lỗi do thư viện quăng ra
 
+    // nếu gặp lỗi MethodArgumentNotValidException => hàm này sẽ được chạy
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity handleDuplicate(MethodArgumentNotValidException exception){
         String message = "";
+
         for(FieldError fieldError : exception.getBindingResult().getFieldErrors()){
             message += fieldError.getDefaultMessage() + "\n";
         }
-        return new ResponseEntity(message, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity("Duplicate", HttpStatus.BAD_REQUEST);
+
+    }
+
+    @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
+    public ResponseEntity handleDuplicate(SQLIntegrityConstraintViolationException exception){
+        return new ResponseEntity("Duplicate", HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(NullPointerException.class)
+    public ResponseEntity handleNullPointer(NullPointerException exception){
+        return new ResponseEntity(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
 }

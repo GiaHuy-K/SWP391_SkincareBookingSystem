@@ -1,13 +1,21 @@
-package com.seroter.skincare_booking.model;
+package com.seroter.skincare_booking.entity;
 
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Entity
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "customers")
 public class Customer {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Tự động tăng ID
+    private Long id;
     @NotBlank(message = "Name cannot be blank!")
     @Pattern(regexp = "^[a-zA-Z ]+$", message = "Name must contain only letters and spaces!")
     public String name;
@@ -28,4 +36,6 @@ public class Customer {
     @NotBlank(message = "Skin type cannot be blank!")
     public String skinType;
     public String bookingHistory;
+
+    public boolean isDeleted = false;
 }

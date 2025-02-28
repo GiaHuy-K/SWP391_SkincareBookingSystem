@@ -14,13 +14,13 @@ public class TherapistAPI {
 
     List<Therapist> therapists = new ArrayList<>();
 
-    @PostMapping
+    @PostMapping("therapist")
     public ResponseEntity createNewTherapist(@Valid @RequestBody Therapist therapist) {
         therapists.add(therapist);
         return ResponseEntity.ok(therapist);
     }
 
-    @GetMapping
+    @GetMapping("therapist")
     public ResponseEntity getAllTherapists() {
         return ResponseEntity.ok(therapists);
     }

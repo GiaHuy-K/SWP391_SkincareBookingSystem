@@ -14,13 +14,13 @@ public class StaffAPI {
 
     List<Staff> staffs = new ArrayList<>();
 
-    @PostMapping
+    @PostMapping("staff")
     public ResponseEntity createNewStaff(@Valid @RequestBody Staff staff) {
         staffs.add(staff);
         return ResponseEntity.ok(staff);
     }
 
-    @GetMapping
+    @GetMapping("staff")
     public ResponseEntity getAllStaffs() {
         return ResponseEntity.ok(staffs);
     }

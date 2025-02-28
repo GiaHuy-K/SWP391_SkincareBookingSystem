@@ -30,4 +30,8 @@ public class CustomerService {
     private void testCommit(){
 
     }
+
+    private void testCommitViet(){
+
+    }
 }

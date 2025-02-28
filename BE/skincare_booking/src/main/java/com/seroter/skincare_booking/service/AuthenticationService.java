@@ -1,4 +1,4 @@
-package com.seroter.skincare_booking.Service;
+package com.seroter.skincare_booking.service;
 
 import com.seroter.skincare_booking.entity.Account;
 
@@ -42,14 +42,12 @@ public class AuthenticationService implements UserDetailsService {
 //            return account;
 //        }
         Account account = new Account();
-
         account.setUsername(accountRequest.getUsername());
         account.setRoleEnum(RoleEnum.CUSTOMER);
         account.setPassword(passwordEncoder.encode(accountRequest.getPassword()));
         account.setFullName(accountRequest.getFullName());
         account.setEmail(accountRequest.getEmail());
-
-
+        account.setPhone(accountRequest.getPhone());
         Account newAccount = authenticationRepository.save(account);
         return newAccount;
     }
@@ -85,6 +83,7 @@ public class AuthenticationService implements UserDetailsService {
         authenticationResponse.setFullName(account.getFullName());
         authenticationResponse.setUsername(account.getUsername());
         authenticationResponse.setToken(token);
+        authenticationResponse.setRoleEnum(account.getRoleEnum());
 
         return authenticationResponse;
     }

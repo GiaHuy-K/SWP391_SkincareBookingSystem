@@ -2,6 +2,7 @@ package com.seroter.skincare_booking.config;
 
 
 
+import com.seroter.skincare_booking.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,7 +20,7 @@ import org.springframework.web.cors.CorsUtils;
 @Configuration
 public class SecurityConfig {
     @Autowired
-    com.seroter.skincare_booking.Service.AuthenticationService authenticationService;
+    AuthenticationService authenticationService;
 
 
     @Autowired

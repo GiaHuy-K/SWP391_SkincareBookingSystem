@@ -4,6 +4,7 @@ import com.seroter.skincare_booking.entity.Account;
 import com.seroter.skincare_booking.model.request.AccountRequest;
 import com.seroter.skincare_booking.model.request.AuthenticationRequest;
 import com.seroter.skincare_booking.model.response.AuthenticationResponse;
+import com.seroter.skincare_booking.service.AuthenticationService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 public class AuthenticationAPI {
     @Autowired
-    com.seroter.skincare_booking.Service.AuthenticationService authenticationService;
+    AuthenticationService authenticationService;
 
     public AuthenticationAPI() {
     }

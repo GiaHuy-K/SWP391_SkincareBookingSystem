@@ -49,6 +49,7 @@ public class AuthenticationService implements UserDetailsService {
         account.setFullName(accountRequest.getFullName());
         account.setEmail(accountRequest.getEmail());
 
+
         Account newAccount = authenticationRepository.save(account);
         return newAccount;
     }

@@ -5,4 +5,5 @@ enum class RoleEnum {
     CUSTOMER,
     MANAGER,
     SKIN_THERAPIST;
+
 }

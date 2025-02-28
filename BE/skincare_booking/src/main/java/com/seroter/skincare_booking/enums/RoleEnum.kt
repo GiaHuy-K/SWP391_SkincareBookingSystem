@@ -7,3 +7,12 @@ enum class RoleEnum {
     SKIN_THERAPIST;
 
 }
+enum class PaymentStatus {
+    PENDING,
+    COMPLETED,
+    FAILED;
+}
+enum class EmployeeType {
+    THERAPIST,
+    STAFF;
+}

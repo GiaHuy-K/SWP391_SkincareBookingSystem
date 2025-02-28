@@ -1,7 +1,7 @@
 package com.seroter.skincare_booking.repository;
 
 
-import com.seroter.skincare_booking.entity.TherapistService;
+import com.seroter.skincare_booking.service.TherapistService;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

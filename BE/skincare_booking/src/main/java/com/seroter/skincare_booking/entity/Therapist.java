@@ -1,5 +1,6 @@
 package com.seroter.skincare_booking.entity;
 
+import com.seroter.skincare_booking.service.TherapistService;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

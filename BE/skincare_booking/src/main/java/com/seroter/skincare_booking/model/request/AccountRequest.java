@@ -1,6 +1,9 @@
 package com.seroter.skincare_booking.model.request;
 
+import com.seroter.skincare_booking.enums.RoleEnum;
 import jakarta.persistence.Column;
+
+import javax.management.relation.Role;
 
 public class AccountRequest {
     public String email;
@@ -10,6 +13,16 @@ public class AccountRequest {
     public String phone;
 
     public String password;
+
+    public RoleEnum roleEnum;
+
+    public RoleEnum getRoleEnum() {
+        return roleEnum;
+    }
+
+    public void setRoleEnum(RoleEnum roleEnum) {
+        this.roleEnum = roleEnum;
+    }
 
     @Column(unique = true)
     public String username;

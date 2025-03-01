@@ -36,7 +36,7 @@ public class TokenService {
     }
 
     // Verify token
-    public Account getCustomerByToken(String token) {
+    public Account getAccountByToken(String token) {
         Claims claims = Jwts.parser()
                 .verifyWith(getSigninKey())
                 .build()

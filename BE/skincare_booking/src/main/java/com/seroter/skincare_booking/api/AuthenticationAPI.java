@@ -1,31 +1,34 @@
 package com.seroter.skincare_booking.api;
 
-
 import com.seroter.skincare_booking.entity.Account;
-import com.seroter.skincare_booking.service.AuthenticationService;
+import com.seroter.skincare_booking.model.request.AccountRequest;
+import com.seroter.skincare_booking.model.request.AuthenticationRequest;
+import com.seroter.skincare_booking.model.response.AuthenticationResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RestControllerAdvice
 @RequestMapping("/api")
+
 public class AuthenticationAPI {
-
     @Autowired
-    AuthenticationService authenticationService;
+    com.seroter.skincare_booking.Service.AuthenticationService authenticationService;
 
-    @PostMapping("/register")
-    public ResponseEntity register(@Valid @RequestBody Account account) {
-        Account newAccount = authenticationService.register(account);
+    public AuthenticationAPI() {
+    }
+
+    @PostMapping({"register"})
+    public ResponseEntity register(@RequestBody @Valid AccountRequest account) {
+        Account newAccount = this.authenticationService.register(account);
         return ResponseEntity.ok(newAccount);
     }
 
-    @PostMapping("login")
-    public ResponseEntity login() {
-        return null;
+    @PostMapping({"login"})
+    public ResponseEntity login(@RequestBody AuthenticationRequest authenticationRequest) {
+        AuthenticationResponse authenticationResponse = authenticationService.login(authenticationRequest);
+        return ResponseEntity.ok(authenticationResponse);
     }
 }

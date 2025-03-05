@@ -24,13 +24,13 @@ public class ValidationHandler {
         for(FieldError fieldError : exception.getBindingResult().getFieldErrors()){
             message += fieldError.getDefaultMessage() + "\n";
         }
-        return new ResponseEntity("Duplicate", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity(message, HttpStatus.BAD_REQUEST);
 
     }
 
     @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
     public ResponseEntity handleDuplicate(SQLIntegrityConstraintViolationException exception){
-        return new ResponseEntity("Duplicate", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(NullPointerException.class)

@@ -1,7 +1,5 @@
 package com.seroter.skincare_booking.model.request;
 
-import com.seroter.skincare_booking.enums.RoleEnum;
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -10,13 +8,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.management.relation.Role;
-
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class AccountRequest {
+public class StaffAccountRequest {
     @NotBlank(message = "Email cannot be blank!")
     @Email
     public String email;
@@ -35,6 +31,4 @@ public class AccountRequest {
 
     @NotBlank(message = "Username cannot be blank!")
     public String username;
-
-
 }

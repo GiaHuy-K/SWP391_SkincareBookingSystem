@@ -10,14 +10,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.management.relation.Role;
-
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class AccountRequest {
-    @NotBlank(message = "Email cannot be blank!")
+public class AdminAccountRequest {
     @Email
     public String email;
 
@@ -33,7 +30,8 @@ public class AccountRequest {
     @Pattern(regexp = "^[a-zA-Z0-9]+$", message = "Password must contain only letters and numbers!")
     public String password;
 
-    @NotBlank(message = "Username cannot be blank!")
+
+
     public String username;
 
 

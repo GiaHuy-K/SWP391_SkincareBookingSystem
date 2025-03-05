@@ -9,7 +9,6 @@ public class AuthenticationResponse {
     public String fullName;
     public String username;
     public String email;
-    @Enumerated(value = EnumType.STRING)
     public RoleEnum roleEnum;
     public String token;
 

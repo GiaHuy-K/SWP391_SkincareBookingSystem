@@ -4,9 +4,12 @@ import com.seroter.skincare_booking.entity.Account;
 
 
 import com.seroter.skincare_booking.enums.RoleEnum;
+import com.seroter.skincare_booking.exception.AuthorizeException;
+import com.seroter.skincare_booking.exception.DuplicateEntity;
 import com.seroter.skincare_booking.model.request.AccountRequest;
 import com.seroter.skincare_booking.model.request.AuthenticationRequest;
 import com.seroter.skincare_booking.model.response.AuthenticationResponse;
+import com.seroter.skincare_booking.model.response.CustomerRegistrationResponse;
 import com.seroter.skincare_booking.repository.AuthenticationRepository;
 import com.seroter.skincare_booking.service.TokenService;
 import jakarta.validation.Valid;
@@ -31,7 +34,7 @@ public class AuthenticationService implements UserDetailsService {
     @Autowired
     TokenService tokenService;
 
-    public Account register(@Valid AccountRequest accountRequest) {
+    public CustomerRegistrationResponse register(@Valid AccountRequest accountRequest) {
 //        // => pass vòng validation
 //        boolean isDuplicate = false;
 //        if(isDuplicate){
@@ -48,8 +51,28 @@ public class AuthenticationService implements UserDetailsService {
         account.setFullName(accountRequest.getFullName());
         account.setEmail(accountRequest.getEmail());
         account.setPhone(accountRequest.getPhone());
-        Account newAccount = authenticationRepository.save(account);
-        return newAccount;
+
+//        try {
+            account = authenticationRepository.save(account);
+            CustomerRegistrationResponse response = new CustomerRegistrationResponse();
+            response.setId(account.getId());
+            response.setUsername(account.getUsername());
+            response.setFullName(account.getFullName());
+            response.setEmail(account.getEmail());
+            response.setRoleEnum(account.getRoleEnum());
+            return response;
+//        } catch (Exception e) {
+//            if(e.getMessage().contains(accountRequest.getEmail())){
+//                throw new DuplicateEntity("Duplicate email");
+//            }
+//            if(e.getMessage().contains(accountRequest.getPhone())){
+//                throw new DuplicateEntity("Duplicate phone");
+//            }
+//            if(e.getMessage().contains(accountRequest.getUsername())){
+//                throw new DuplicateEntity("Duplicate username");
+//            }
+//            throw e;
+//        }
     }
 
     public Account login() {
@@ -65,7 +88,7 @@ public class AuthenticationService implements UserDetailsService {
     }
 
     public AuthenticationResponse login(AuthenticationRequest authenticationRequest) {
-        try{
+        try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             authenticationRequest.getUsername(),

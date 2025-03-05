@@ -7,16 +7,19 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.Set;
+
 @Entity
-@Table(name = "service")
+@Table(name = "skincareservice")
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Service {
+public class SkincareService {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int serviceID;
+    @Column(name = "skincare_service_id")
+    private int id;
 
     @Column(nullable = false, length = 100)
     private String name;
@@ -29,4 +32,7 @@ public class Service {
 
     @Column(nullable = false)
     private int duration;
+
+
+
 }

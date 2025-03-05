@@ -17,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 
 @Getter
@@ -166,4 +167,12 @@ public class Account implements UserDetails {
     public void setRoleEnum(RoleEnum roleEnum) {
         this.roleEnum = roleEnum;
     }
+
+
+    @ManyToMany
+    @JoinTable(name = "therapist_services" ,
+            joinColumns = @JoinColumn(name = "therapist_id"),
+            inverseJoinColumns = @JoinColumn(name = "skincare_service_id"))
+    private Set<SkincareService> skincareServices;
+
 }

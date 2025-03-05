@@ -14,15 +14,7 @@ public class AccountRequest {
 
     public String password;
 
-    public RoleEnum roleEnum;
 
-    public RoleEnum getRoleEnum() {
-        return roleEnum;
-    }
-
-    public void setRoleEnum(RoleEnum roleEnum) {
-        this.roleEnum = roleEnum;
-    }
 
     @Column(unique = true)
     public String username;

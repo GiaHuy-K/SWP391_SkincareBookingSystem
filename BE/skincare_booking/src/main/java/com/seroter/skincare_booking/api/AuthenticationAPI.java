@@ -4,6 +4,7 @@ import com.seroter.skincare_booking.entity.Account;
 import com.seroter.skincare_booking.model.request.AccountRequest;
 import com.seroter.skincare_booking.model.request.AuthenticationRequest;
 import com.seroter.skincare_booking.model.response.AuthenticationResponse;
+import com.seroter.skincare_booking.model.response.CustomerRegistrationResponse;
 import com.seroter.skincare_booking.service.AuthenticationService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +23,8 @@ public class AuthenticationAPI {
     }
 
     @PostMapping({"register"})
-    public ResponseEntity register(@RequestBody @Valid AccountRequest account) {
-        Account newAccount = this.authenticationService.register(account);
+    public ResponseEntity<CustomerRegistrationResponse> register(@RequestBody @Valid AccountRequest account) {
+        CustomerRegistrationResponse newAccount = this.authenticationService.register(account);
         return ResponseEntity.ok(newAccount);
     }
 

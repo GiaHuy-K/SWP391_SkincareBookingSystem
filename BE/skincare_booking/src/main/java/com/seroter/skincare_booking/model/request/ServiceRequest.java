@@ -1,8 +1,8 @@
-package com.seroter.skincare_booking.model;
+package com.seroter.skincare_booking.model.request;
 
 import jakarta.validation.constraints.NotBlank;
 
-public class Service {
+public class ServiceRequest {
     @NotBlank(message = "ServiceId cannot be blank!")
     public String ServiceId;
     @NotBlank(message = "ServiceName cannot be blank!")

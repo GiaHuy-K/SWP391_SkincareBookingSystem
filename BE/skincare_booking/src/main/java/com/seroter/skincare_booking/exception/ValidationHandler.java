@@ -37,4 +37,9 @@ public class ValidationHandler {
     public ResponseEntity handleNullPointer(NullPointerException exception){
         return new ResponseEntity(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity handleValidation (Exception exception){
+        // mỗi khi gặp lỗi này lập tức gọi
+        return new ResponseEntity(exception.getMessage(), HttpStatus.BAD_REQUEST);
+    }
 }

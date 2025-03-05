@@ -4,6 +4,7 @@ import com.seroter.skincare_booking.entity.Account;
 import com.seroter.skincare_booking.enums.RoleEnum;
 import com.seroter.skincare_booking.model.request.AccountRequest;
 import com.seroter.skincare_booking.model.request.AdminAccountRequest;
+import com.seroter.skincare_booking.model.request.TherapistAccountRequest;
 import com.seroter.skincare_booking.repository.AuthenticationRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ public class AdminService {
     AuthenticationRepository authenticationRepository;
 
 
-    public Account register(@Valid AdminAccountRequest accountRequest) {
+    public Account register( AdminAccountRequest accountRequest) {
 
         Account account = new Account();
         account.setUsername(accountRequest.getUsername());
@@ -28,6 +29,21 @@ public class AdminService {
         account.setEmail(accountRequest.getEmail());
         account.setPhone(accountRequest.getPhone());
         account.setRoleEnum(RoleEnum.ADMIN);
+        Account newAccount = authenticationRepository.save(account);
+        return newAccount;
+    }
+
+    public Account registerTherapist(TherapistAccountRequest accountRequest) {
+
+        Account account = new Account();
+        account.setUsername(accountRequest.getUsername());
+        account.setPassword(passwordEncoder.encode(accountRequest.getPassword()));
+        account.setFullName(accountRequest.getFullName());
+        account.setEmail(accountRequest.getEmail());
+        account.setPhone(accountRequest.getPhone());
+        account.setQualification(accountRequest.getQualification());
+        account.setExperience(accountRequest.getExperience());
+        account.setRoleEnum(RoleEnum.THERAPIST);
         Account newAccount = authenticationRepository.save(account);
         return newAccount;
     }

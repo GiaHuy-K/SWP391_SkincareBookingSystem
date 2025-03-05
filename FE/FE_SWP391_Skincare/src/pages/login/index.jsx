@@ -8,7 +8,7 @@ import api from "../../config/axios";
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
-    email: "",
+    fullname: "",
     password: "",
     rememberMe: false
   });
@@ -19,10 +19,10 @@ const LoginPage = () => {
 
   const validateForm = () => {
     const newErrors = {};
-    if (!formData.email.trim()) {
-      newErrors.email = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Email is invalid";
+    if (!formData.fullname.trim()) {
+      newErrors.fullname = "Full name is required";
+    } else if (formData.fullname.length < 2) {
+      newErrors.fullname = "Full name must be at least 2 characters";
     }
 
     if (!formData.password) {
@@ -86,31 +86,31 @@ const LoginPage = () => {
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="rounded-md shadow-sm space-y-4">
             <div>
-              <label htmlFor="email" className="sr-only">
-                Email
+              <label htmlFor="fullname" className="sr-only">
+                Full Name
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                   <FaUser className="h-5 w-5 text-gray-400" />
                 </div>
                 <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
+                  id="fullname"
+                  name="fullname"
+                  type="text"
+                  autoComplete="name"
                   required
                   className={`appearance-none rounded-lg relative block w-full pl-10 pr-3 py-2 border ${
-                    errors.email ? "border-red-300" : "border-gray-300"
+                    errors.fullname ? "border-red-300" : "border-gray-300"
                   } placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm`}
-                  placeholder="Enter your email"
-                  value={formData.email}
+                  placeholder="Enter your full name"
+                  value={formData.fullname}
                   onChange={handleChange}
-                  aria-invalid={errors.email ? "true" : "false"}
+                  aria-invalid={errors.fullname ? "true" : "false"}
                 />
               </div>
-              {errors.email && (
+              {errors.fullname && (
                 <p className="mt-2 text-sm text-red-600" role="alert">
-                  {errors.email}
+                  {errors.fullname}
                 </p>
               )}
             </div>

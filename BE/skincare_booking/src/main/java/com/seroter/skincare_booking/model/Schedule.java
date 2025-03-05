@@ -1,4 +1,4 @@
 package com.seroter.skincare_booking.model;
 
-public class Manager {
+public class Schedule {
 }

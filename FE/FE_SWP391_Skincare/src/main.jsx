@@ -21,20 +21,20 @@ const router = createBrowserRouter([
     path: "/register",
     element: <RegisterPage />,
   },
-  {
-    path: "/dashboard",
-    element: <AdminLayout/>,
-    children:[
-      {
-        path: "/dashboard/booking",
-        element: <ManageBooking/>
-      },
-      {
-        path: "/dashboard/user",
-        element: <ManageUser/>
-      },
-    ]
-  },
+  // {
+  //   path: "/dashboard",
+  //   element: <AdminLayout/>,
+  //   children:[
+  //     {
+  //       path: "/dashboard/booking",
+  //       element: <ManageBooking/>
+  //     },
+  //     {
+  //       path: "/dashboard/user",
+  //       element: <ManageUser/>
+  //     },
+  //   ]
+  // },
 ]);
 
 createRoot(document.getElementById("root")).render(

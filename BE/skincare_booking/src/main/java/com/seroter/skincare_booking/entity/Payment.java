@@ -1,6 +1,7 @@
 package com.seroter.skincare_booking.entity;
 
-import com.seroter.skincare_booking.enums.PaymentStatus;
+
+import com.seroter.skincare_booking.enums.PaymentStatusEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -36,5 +37,5 @@ public class Payment {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private PaymentStatus status;
+    private PaymentStatusEnum status;
 }

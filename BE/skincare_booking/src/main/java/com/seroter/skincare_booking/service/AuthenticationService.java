@@ -43,7 +43,7 @@ public class AuthenticationService implements UserDetailsService {
 //        }
         Account account = new Account();
         account.setUsername(accountRequest.getUsername());
-        account.setRoleEnum(RoleEnum.CUSTOMER);
+        account.setRoleEnum(accountRequest.getRoleEnum());
         account.setPassword(passwordEncoder.encode(accountRequest.getPassword()));
         account.setFullName(accountRequest.getFullName());
         account.setEmail(accountRequest.getEmail());

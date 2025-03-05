@@ -20,6 +20,7 @@ const RegisterPage = () => {
     email: "",
     username: "",
     password: "",
+    phone: "",
     terms: false,
   });
   const navigate = useNavigate()
@@ -98,6 +99,13 @@ const RegisterPage = () => {
         else if (!/(?=.*[!@#$%^&*])/.test(value))
           newErrors.password = "Include at least one special character";
         else delete newErrors.password;
+        break;
+
+      case "phone":
+        if (!value) newErrors.phone = "Phone number is required";
+        else if (!/^[0-9]{10}$/.test(value))
+          newErrors.phone = "Phone must be 10 digits";
+        else delete newErrors.phone;
         break;
 
       case "terms":
@@ -263,6 +271,36 @@ const RegisterPage = () => {
                   </div>
                   {errors.email && (
                     <p className="mt-2 text-sm text-red-600">{errors.email}</p>
+                  )}
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="phone"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Phone Number
+                  </label>
+                  <div className="mt-1 relative">
+                    <input
+                      id="phone"
+                      name="phone"
+                      type="tel"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      className={`appearance-none block w-full px-3 py-2 border ${
+                        errors.phone ? "border-red-300" : "border-gray-300"
+                      } rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
+                      placeholder="0123456789"
+                    />
+                    {errors.phone && (
+                      <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                        <FaTimesCircle className="h-5 w-5 text-red-500" />
+                      </div>
+                    )}
+                  </div>
+                  {errors.phone && (
+                    <p className="mt-2 text-sm text-red-600">{errors.phone}</p>
                   )}
                 </div>
 

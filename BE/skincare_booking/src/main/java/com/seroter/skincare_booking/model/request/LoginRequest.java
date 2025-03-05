@@ -1,6 +1,7 @@
 package com.seroter.skincare_booking.model.request;
 
 
+import com.seroter.skincare_booking.enums.RoleEnum;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -17,13 +18,6 @@ public class LoginRequest {
     @Size(min = 6, message = "Password must be at least 6 characters!")
     private String password;
 
-    private Role role; // Sử dụng enum Role đã định nghĩa riêng
+    private RoleEnum role; // Sử dụng enum Role đã định nghĩa riêng
 }
 
-// Enum Role định nghĩa riêng
-enum Role {
-    STAFF,
-    CUSTOMER,
-    MANAGER,
-    SKIN_THERAPIST
-}

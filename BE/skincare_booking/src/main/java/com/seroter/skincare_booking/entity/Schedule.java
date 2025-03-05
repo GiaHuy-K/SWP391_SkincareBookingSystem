@@ -1,6 +1,7 @@
 package com.seroter.skincare_booking.entity;
 
-import com.seroter.skincare_booking.enums.EmployeeType;
+
+import com.seroter.skincare_booking.enums.EmployeeTypeEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,7 +31,7 @@ public class Schedule {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
-    private EmployeeType employeeType;
+    private EmployeeTypeEnum employeeType;
 
     @Column(nullable = false)
     private LocalDate date;

@@ -1,5 +1,6 @@
 package com.seroter.skincare_booking.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,7 +20,8 @@ public class SkincareService {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "skincare_service_id")
-    private int id;
+    @JsonIgnore
+    private Long id;
 
     @Column(nullable = false, length = 100)
     private String name;

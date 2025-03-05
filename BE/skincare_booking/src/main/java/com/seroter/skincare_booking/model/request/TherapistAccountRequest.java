@@ -8,31 +8,35 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class TherapistAccountRequest {
     @Email
-    public String email;
+    String email;
 
     @NotBlank(message = "Name cannot be blank!")
     @Pattern(regexp = "^[a-zA-Z ]+$", message = "Name must contain only letters and spaces!")
-    public String fullName;
+    String fullName;
 
     @NotBlank(message = "Phone number cannot be blank!")
     @Pattern(regexp = "^\\d{10}$", message = "Phone number must be 10 digits!")
-    public String phone;
+    String phone;
 
     @NotBlank(message = "Password cannot be blank!")
     @Pattern(regexp = "^[a-zA-Z0-9]+$", message = "Password must contain only letters and numbers!")
-    public String password;
+    String password;
 
     @NotBlank(message = "Qualification cannot be blank!")
-    public String qualification;
+    String qualification;
 
-    public int experience;
+    int experience;
 
     @NotBlank(message = "Username cannot be blank!")
-    public String username;
+    String username;
+
+    Set<Long> skinCareServiceIds;
 }

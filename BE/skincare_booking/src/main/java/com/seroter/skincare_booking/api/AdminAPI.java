@@ -2,6 +2,7 @@ package com.seroter.skincare_booking.api;
 import com.seroter.skincare_booking.entity.Account;
 import com.seroter.skincare_booking.model.request.AccountRequest;
 import com.seroter.skincare_booking.model.request.AdminAccountRequest;
+import com.seroter.skincare_booking.model.request.StaffAccountRequest;
 import com.seroter.skincare_booking.model.request.TherapistAccountRequest;
 import com.seroter.skincare_booking.service.AdminService;
 import com.seroter.skincare_booking.service.AuthenticationService;
@@ -34,4 +35,9 @@ public class AdminAPI {
         return ResponseEntity.ok(newAccount);
     }
 
+    @PostMapping({"registerstaff"})
+    public ResponseEntity register(@RequestBody @Valid StaffAccountRequest account) {
+        Account newAccount = this.adminService.registerStaff(account);
+        return ResponseEntity.ok(newAccount);
+    }
 }

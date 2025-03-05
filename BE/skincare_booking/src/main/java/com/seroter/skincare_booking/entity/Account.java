@@ -27,10 +27,12 @@ public class Account implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY) // generate id
     public long id;
 
+    @Column(unique = true)
     public String email;
 
     public String fullName;
 
+    @Column(unique = true)
     public String phone;
 
     public String password;

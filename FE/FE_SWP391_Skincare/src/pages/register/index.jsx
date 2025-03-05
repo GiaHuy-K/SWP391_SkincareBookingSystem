@@ -12,6 +12,7 @@ import {
 import api from "../../config/axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { auth } from '../../config/firebase';
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState({

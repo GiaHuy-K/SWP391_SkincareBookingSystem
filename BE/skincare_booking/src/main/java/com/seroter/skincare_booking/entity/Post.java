@@ -16,10 +16,6 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postID;
 
-    @ManyToOne
-    @JoinColumn(name = "therapistID", nullable = false)
-    private Therapist therapist;
-
     @Column(nullable = false, length = 255)
     private String title;
 

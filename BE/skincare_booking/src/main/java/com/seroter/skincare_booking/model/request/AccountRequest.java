@@ -16,7 +16,7 @@ public class AccountRequest {
 
 
 
-    @Column(unique = true)
+
     public String username;
 
     public String getEmail() {

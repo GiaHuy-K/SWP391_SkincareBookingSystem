@@ -14,7 +14,6 @@ public class AdminAccountRequest {
 
 
 
-    @Column(unique = true)
     public String username;
 
     public String getEmail() {

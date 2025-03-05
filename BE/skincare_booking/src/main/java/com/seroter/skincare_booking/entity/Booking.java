@@ -1,52 +1,44 @@
 package com.seroter.skincare_booking.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 @Entity
+@Table(name = "booking")
+@AllArgsConstructor
 public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public int bookingID;
-
-    public int customerID;
-    public int serviceID;
-    public int comboID;
-    public int therapistID;
-    public int discountID;
 
 
-    public Date bookingDate;
 
-    public Date scheduledDateTime;
+    @ManyToOne
+    @JoinColumn(name = "account_id")
+    Account account;
 
+    @ManyToMany(cascade = CascadeType.ALL)
+            @JoinTable(name = "booking_services",
+            joinColumns = @JoinColumn(name = "booking_id"),
+            inverseJoinColumns = @JoinColumn(name ="service_id")
+            )
+    List<SpaService> services = new ArrayList<>();
 
-    public Date checkInDate;
+    LocalDateTime startTime;
+    LocalDateTime endTime;
 
-    public int staffCheckin;
-    public int staffCheckout;
-    public int staffAssign;
+    @Enumerated(EnumType.STRING)
 
-    @Temporal(TemporalType.DATE)
-
-    public Date serviceStart;
-
-    @Temporal(TemporalType.DATE)
-
-    public Date serviceEnd;
-    @Temporal(TemporalType.DATE)
-
-    public Date checkOutDate;
-
-    public String status;
-
-    public Booking() {
-
-    }
+    LocalDateTime createAt;
 
 
 }

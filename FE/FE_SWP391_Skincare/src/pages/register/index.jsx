@@ -466,7 +466,7 @@ const RegisterPage = () => {
                   onClick={() => navigate('/login')}
                   className="text-sm text-indigo-600 hover:text-indigo-500 hover:underline focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 >
-                  Already have an account? Login
+                  Already have an account?  Login
                 </button>
               </div>
             </form>

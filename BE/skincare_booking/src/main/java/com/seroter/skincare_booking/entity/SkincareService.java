@@ -33,7 +33,10 @@ public class SkincareService {
     private BigDecimal price;
 
     @Column(nullable = false)
-    private int duration;
+    private Integer duration;
+
+    @JsonIgnore
+    private boolean isDeleted = false;
 
 
 

@@ -17,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 
 @Getter
@@ -27,10 +28,12 @@ public class Account implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY) // generate id
     public long id;
 
+    @Column(unique = true)
     public String email;
 
     public String fullName;
 
+    @Column(unique = true)
     public String phone;
 
     public String password;
@@ -41,13 +44,16 @@ public class Account implements UserDetails {
     @Enumerated(value = EnumType.STRING)// lưu số manager,customer,...
     public RoleEnum roleEnum;
 
+    public String qualification;
+
+    public int experience;
+
     public Account() {
 
     }
 
 
-
-    public Account(long id, String email, String fullName, String phone, String password, String username, RoleEnum roleEnum) {
+    public Account(long id, String email, String fullName, String phone, String password, String username, RoleEnum roleEnum, String qualification, int experience) {
         this.id = id;
         this.email = email;
         this.fullName = fullName;
@@ -55,6 +61,24 @@ public class Account implements UserDetails {
         this.password = password;
         this.username = username;
         this.roleEnum = roleEnum;
+        this.qualification = qualification;
+        this.experience = experience;
+    }
+
+    public String getQualification() {
+        return qualification;
+    }
+
+    public void setQualification(String qualification) {
+        this.qualification = qualification;
+    }
+
+    public int getExperience() {
+        return experience;
+    }
+
+    public void setExperience(int experience) {
+        this.experience = experience;
     }
 
     public long getId() {
@@ -143,4 +167,12 @@ public class Account implements UserDetails {
     public void setRoleEnum(RoleEnum roleEnum) {
         this.roleEnum = roleEnum;
     }
+
+
+    @ManyToMany
+    @JoinTable(name = "therapist_services" ,
+            joinColumns = @JoinColumn(name = "therapist_id"),
+            inverseJoinColumns = @JoinColumn(name = "skincare_service_id"))
+    private Set<SkincareService> skincareServices;
+
 }

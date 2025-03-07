@@ -24,17 +24,22 @@ public class ValidationHandler {
         for(FieldError fieldError : exception.getBindingResult().getFieldErrors()){
             message += fieldError.getDefaultMessage() + "\n";
         }
-        return new ResponseEntity("Duplicate", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity(message, HttpStatus.BAD_REQUEST);
 
     }
 
     @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
     public ResponseEntity handleDuplicate(SQLIntegrityConstraintViolationException exception){
-        return new ResponseEntity("Duplicate", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(NullPointerException.class)
     public ResponseEntity handleNullPointer(NullPointerException exception){
+        return new ResponseEntity(exception.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity handleValidation (Exception exception){
+        // mỗi khi gặp lỗi này lập tức gọi
         return new ResponseEntity(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
 }

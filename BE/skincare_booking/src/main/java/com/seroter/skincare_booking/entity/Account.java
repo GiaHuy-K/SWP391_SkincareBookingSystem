@@ -175,4 +175,9 @@ public class Account implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "skincare_service_id"))
     private Set<SkincareService> skincareServices;
 
+    @OneToMany(mappedBy = "staff")
+    private Set<Schedule> staffSchedules;
+
+    @OneToMany(mappedBy = "therapist")
+    private Set<Schedule> therapistSchedules;
 }

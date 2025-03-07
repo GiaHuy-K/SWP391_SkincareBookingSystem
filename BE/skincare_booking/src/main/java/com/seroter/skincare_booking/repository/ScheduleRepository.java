@@ -10,7 +10,5 @@ import java.util.List;
 @Repository
 public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
     List<Schedule> findByDate(LocalDate date);
-    List<Schedule> findByTherapistID(Long therapistID);
-    List<Schedule> findByStaffID(Long staffID);
 
 }

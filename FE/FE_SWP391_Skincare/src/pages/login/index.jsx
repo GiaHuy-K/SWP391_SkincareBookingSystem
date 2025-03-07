@@ -8,7 +8,7 @@ import api from "../../config/axios";
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
-    fullname: "",
+    username: "",
     password: "",
     rememberMe: false
   });
@@ -19,10 +19,10 @@ const LoginPage = () => {
 
   const validateForm = () => {
     const newErrors = {};
-    if (!formData.fullname.trim()) {
-      newErrors.fullname = "Full name is required";
-    } else if (formData.fullname.length < 2) {
-      newErrors.fullname = "Full name must be at least 2 characters";
+    if (!formData.username.trim()) {
+      newErrors.username = "User name is required";
+    } else if (formData.username.length < 2) {
+      newErrors.username = "User name must be at least 2 characters";
     }
 
     if (!formData.password) {
@@ -40,21 +40,42 @@ const LoginPage = () => {
     if (validateForm()) {
       setIsLoading(true);
       
-      try{
-        const response = await api.post('login', formData)
-        const { token, role } = response.data.data
-        localStorage.setItem('token', token)
-        toast.success('Successfully login!')
+      try {
+        console.log('Sending login data:', formData);
+
+        const response = await api.post('login', formData);
         
-        if(role === 'ADMIN'){
-          navigate('/dashboard')
-        }else if(role === 'CUSTOMER'){
-          navigate('/')
+        console.log('Full response:', response);
+        
+        console.log('Response status:', response.status);
+        console.log('Response data:', response.data);
+        console.log('Response headers:', response.headers);
+
+        if (response.data) {
+          console.log('Token:', response.data.token);
+          console.log('Role:', response.data.role);
+          
+          const { token, role } = response.data;
+          localStorage.setItem('token', token);
+          toast.success('Successfully login!');
+          
+          if (role === 'ADMIN') {
+            navigate('/dashboard');
+          } else if (role === 'CUSTOMER') {
+            navigate('/');
+          }
+        } else {
+          console.log('No data in response');
+          toast.error('Invalid response format');
         }
 
-      }catch(err){
-        toast.error(err.response.data)
-      }finally{
+      } catch (err) {
+        console.error('Login error:', err);
+        console.error('Error response:', err.response);
+        console.error('Error message:', err.message);
+        
+        toast.error(err.response?.data || 'Login failed');
+      } finally {
         setIsLoading(false);
       }
     }
@@ -86,7 +107,7 @@ const LoginPage = () => {
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="rounded-md shadow-sm space-y-4">
             <div>
-              <label htmlFor="fullname" className="sr-only">
+              <label htmlFor="username" className="sr-only">
                 Full Name
               </label>
               <div className="relative">
@@ -94,23 +115,23 @@ const LoginPage = () => {
                   <FaUser className="h-5 w-5 text-gray-400" />
                 </div>
                 <input
-                  id="fullname"
-                  name="fullname"
+                  id="username"
+                  name="username"
                   type="text"
                   autoComplete="name"
                   required
                   className={`appearance-none rounded-lg relative block w-full pl-10 pr-3 py-2 border ${
-                    errors.fullname ? "border-red-300" : "border-gray-300"
+                    errors.username ? "border-red-300" : "border-gray-300"
                   } placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm`}
-                  placeholder="Enter your full name"
-                  value={formData.fullname}
+                  placeholder="Enter your user name"
+                  value={formData.username}
                   onChange={handleChange}
-                  aria-invalid={errors.fullname ? "true" : "false"}
+                  aria-invalid={errors.username ? "true" : "false"}
                 />
               </div>
-              {errors.fullname && (
+              {errors.username && (
                 <p className="mt-2 text-sm text-red-600" role="alert">
-                  {errors.fullname}
+                  {errors.username}
                 </p>
               )}
             </div>

@@ -10,6 +10,7 @@ import ManageBooking from "./pages/admin/manage-services.jsx";
 import ManageUser from "./pages/admin/manage-user.jsx";
 import AdminLayout from "./components/layouts/adminLayout.jsx";
 import ManageServices from "./pages/admin/manage-services.jsx";
+import ManageTherapist from "./pages/admin/manage-therapist.jsx";
 
 <import>RouterProvider,</import>;
 
@@ -26,14 +27,21 @@ const router = createBrowserRouter([
     path: "/dashboard",
     element: <AdminLayout />,
     children: [
+      //services
       {
         path: "/dashboard/services",
         element: <ManageServices />,
       },
-      //     {
-      //       path: "/dashboard/user",
-      //       element: <ManageUser/>
-      //     },
+      //user or customer
+      {
+        path: "/dashboard/user",
+        element: <ManageUser />,
+      },
+      //ManageTherapist
+      {
+        path: "/dashboard/therapist",
+        element: <ManageTherapist />,
+      },
     ],
   },
 ]);

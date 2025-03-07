@@ -1,28 +1,141 @@
-import React, { useState, useEffect } from 'react';
-import { toast } from 'react-toastify';
-import api from '../../config/axios';
+import React, { useState, useEffect } from "react";
+import { toast, ToastContainer } from "react-toastify";
+import api from "../../config/axios";
+import {
+  Button,
+  Form,
+  Image,
+  Input,
+  Modal,
+  Popconfirm,
+  Table,
+  Upload,
+} from "antd";
+import FormItem from "antd/es/form/FormItem";
+import { useForm } from "antd/es/form/Form";
+import { PlusOutlined } from "@ant-design/icons";
+// import uploadFile from "../../utils/upload";
 
 function ManageServices() {
-  const [services, setServices] = useState([]);
+  const [servicesList, setServicesList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingService, setEditingService] = useState(null);
-  const [formData, setFormData] = useState({
-    name: '',
-    description: '',
-    price: '',
-    duration: ''
-  });
+  const [formData] = useForm();
+  const [isOpen, setOpen] = useState(false);
+  // const [previewOpen, setPreviewOpen] = useState(false);
+  // const [previewImage, setPreviewImage] = useState("");
+  // const [fileList, setFileList] = useState([]);
+  // const handlePreview = async (file) => {
+  //   if (!file.url && !file.preview) {
+  //     file.preview = await getBase64(file.originFileObj);
+  //   }
+  //   setPreviewImage(file.url || file.preview);
+  //   setPreviewOpen(true);
+  // };
+  // const handleChange = ({ fileList: newFileList }) => setFileList(newFileList);
+  // const uploadButton = (
+  //   <button
+  //     style={{
+  //       border: 0,
+  //       background: "none",
+  //     }}
+  //     type="button"
+  //   >
+  //     <PlusOutlined />
+  //     <div
+  //       style={{
+  //         marginTop: 8,
+  //       }}
+  //     >
+  //       Upload
+  //     </div>
+  //   </button>
+  // );
+  // const getBase64 = (file) =>
+  //   new Promise((resolve, reject) => {
+  //     const reader = new FileReader();
+  //     reader.readAsDataURL(file);
+  //     reader.onload = () => resolve(reader.result);
+  //     reader.onerror = (error) => reject(error);
+  //   });
 
-  
+  const columns = [
+    {
+      title: "Id",
+      dataIndex: "id",
+      key: "id",
+    },
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+    },
+    {
+      title: "Duration",
+      dataIndex: "duration",
+      key: "duration",
+    },
+    {
+      title: "Price",
+      dataIndex: "price",
+      key: "price",
+    },
+    {
+      title: "Description",
+      dataIndex: "description",
+      key: "description",
+    },
+    // {
+    //   title: "Image",
+    //   dataIndex: "image",
+    //   key: "image",
+    // render: (image) =><Image src={image} width ={100}/>,
+    // },
+    {
+      title: "Action",
+      dataIndex: "id",
+      key: "id",
+      render: (id, service) => {
+        return (
+          <>
+            <Button
+              type="primary"
+              onClick={() => {
+                setOpen(true);
+                formData.setFieldsValue(service);
+              }}
+            >
+              Edit
+            </Button>
+            <Popconfirm
+              title="Delete the service"
+              description=" Are you sure to delete this service?"
+              onConfirm={() => handleDeleteSevice(id)}
+            >
+              <Button danger type="primary">
+                Delete
+              </Button>
+            </Popconfirm>
+          </>
+        );
+      },
+    },
+  ];
+
+  // Delete service
+  const handleDeleteSevice = async (id) => {
+    await api.delete(`/services/${id}`);
+    toast.success("Succesfully delete service");
+    fetchServices();
+  };
   // Fetch services
   const fetchServices = async () => {
     setIsLoading(true);
     try {
-      const response = await api.get('/services');
-      setServices(response.data);
+      const response = await api.get("/services");
+      console.log(response.data);
+      setServicesList(response.data);
     } catch (error) {
-      toast.error('Failed to fetch services');
+      toast.error("Failed to fetch services");
     } finally {
       setIsLoading(false);
     }
@@ -33,238 +146,152 @@ function ManageServices() {
   }, []);
 
   // Handle form input changes
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
 
   // Create/Update service
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-    try {
-      if (editingService) {
-        await api.put(`/services/${editingService.servicesId}`, formData);
-        toast.success('Service updated successfully');
-      } else {
-        await api.post('/services', formData);
-        toast.success('Service created successfully');
-      }
-      fetchServices();
-      handleCloseModal();
-    } catch (error) {
-      toast.error(error.response?.data?.message || 'Operation failed');
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  // Delete service
-  const handleDelete = async (servicesId) => {
-    if (window.confirm('Are you sure you want to delete this service?')) {
-      try {
-        await api.delete(`/services/${servicesId}`);
-        toast.success('Service deleted successfully');
-        fetchServices();
-      } catch (error) {
-        toast.error('Failed to delete service');
-      }
-    }
-  };
 
   // Modal handlers
-  const handleOpenModal = (service = null) => {
-    if (service) {
-      setEditingService(service);
-      setFormData({
-        name: service.name,
-        description: service.description,
-        price: service.price,
-        duration: service.duration
-      });
-    } else {
-      setEditingService(null);
-      setFormData({
-        name: '',
-        description: '',
-        price: '',
-        duration: ''
-      });
-    }
-    setIsModalOpen(true);
+  const handleOpenModal = () => {
+    setOpen(true);
   };
-
   const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setEditingService(null);
-    setFormData({
-      name: '',
-      description: '',
-      price: '',
-      duration: ''
-    });
+    setOpen(false);
+  };
+  const handleSumbitForm = async (values) => {
+    console.log(values);
+    // if(values.image){
+    //  const url =  await uploadFile(values.image.file.originFileObj);
+    //  values.image = url;
+    // }
+    if (values.id) {
+      //udpate
+      const response = await api.put(`/services/${values.id}`, values);
+      toast.success("Successfully edit service");
+    } else {
+      //create
+      const response = await api.post("/services", values);
+      toast.success("Successfully create new service");
+    }
+    handleCloseModal();
+    fetchServices();
+    formData.resetFields();
   };
 
   return (
-    <div className="p-6">
-      {/* Header */}
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-gray-800">Manage Services</h1>
-        <button
-          onClick={() => handleOpenModal()}
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+    <div>
+      <ToastContainer />
+      <h1 className="text-center text-3xl font-bold text-green-600 my-4">
+        Manage Services
+      </h1>
+      <Button
+        type="primary"
+        icon={<PlusOutlined />}
+        style={{ backgroundColor: "#06b6d4" }}
+        onClick={handleOpenModal}
+      >
+        Add new service
+      </Button>
+      <Table dataSource={servicesList} columns={columns} />;
+      <Modal
+        title="Create new service"
+        open={isOpen}
+        onClose={handleCloseModal}
+        onCancel={handleCloseModal}
+        onOk={() => formData.submit()}
+      >
+        <Form
+          labelCol={{
+            span: 24,
+          }}
+          form={formData}
+          onFinish={handleSumbitForm}
         >
-          Add New Service
-        </button>
-      </div>
-
-      {/* Services Table */}
-      <div className="overflow-x-auto bg-white rounded-lg shadow">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Service ID
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Name
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Description
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Price
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Duration
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Actions
-              </th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {services.map((service) => (
-              <tr key={service.servicesId}>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm text-gray-900">{service.servicesId}</div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm text-gray-900">{service.name}</div>
-                </td>
-                <td className="px-6 py-4">
-                  <div className="text-sm text-gray-900">{service.description}</div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm text-gray-900">${service.price}</div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm text-gray-900">{service.duration} min</div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                  <button
-                    onClick={() => handleOpenModal(service)}
-                    className="text-indigo-600 hover:text-indigo-900 mr-4"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDelete(service.servicesId)}
-                    className="text-red-600 hover:text-red-900"
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      {/* Modal */}
-      {isModalOpen && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
-          <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
-            <div className="mt-3">
-              <h3 className="text-lg font-medium text-gray-900">
-                {editingService ? 'Edit Service' : 'Add New Service'}
-              </h3>
-              <form onSubmit={handleSubmit} className="mt-4">
-                <div className="mb-4">
-                  <label className="block text-gray-700 text-sm font-bold mb-2">
-                    Name
-                  </label>
-                  <input
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    required
-                  />
-                </div>
-                <div className="mb-4">
-                  <label className="block text-gray-700 text-sm font-bold mb-2">
-                    Description
-                  </label>
-                  <textarea
-                    name="description"
-                    value={formData.description}
-                    onChange={handleChange}
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    required
-                  />
-                </div>
-                <div className="mb-4">
-                  <label className="block text-gray-700 text-sm font-bold mb-2">
-                    Price ($)
-                  </label>
-                  <input
-                    type="number"
-                    name="price"
-                    value={formData.price}
-                    onChange={handleChange}
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    required
-                  />
-                </div>
-                <div className="mb-4">
-                  <label className="block text-gray-700 text-sm font-bold mb-2">
-                    Duration (minutes)
-                  </label>
-                  <input
-                    type="number"
-                    name="duration"
-                    value={formData.duration}
-                    onChange={handleChange}
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    required
-                  />
-                </div>
-                <div className="flex justify-end gap-4">
-                  <button
-                    type="button"
-                    onClick={handleCloseModal}
-                    className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    disabled={isLoading}
-                    className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 disabled:bg-blue-400"
-                  >
-                    {isLoading ? 'Processing...' : editingService ? 'Update' : 'Create'}
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      )}
+          <FormItem label="Id" name="id" hidden>
+            <Input></Input>
+          </FormItem>
+          <FormItem
+            label="Name"
+            name="name"
+            rules={[
+              {
+                required: true,
+                message: "Name can not be empty",
+              },
+            ]}
+          >
+            <Input></Input>
+          </FormItem>
+          <FormItem
+            label="Description"
+            name="description"
+            rules={[
+              {
+                required: true,
+                message: "Description can not be empty",
+              },
+            ]}
+          >
+            <Input></Input>
+          </FormItem>
+          <FormItem
+            label="Price"
+            name="price"
+            rules={[
+              {
+                required: true,
+                message: "Price can not be empty",
+              },
+            ]}
+          >
+            <Input></Input>
+          </FormItem>
+          <FormItem
+            label="Duration"
+            name="duration"
+            rules={[
+              {
+                required: true,
+                message: "Duration can not be empty",
+              },
+            ]}
+          >
+            <Input></Input>
+          </FormItem>
+          {/* image */}
+          {/* <FormItem
+            label="Image"
+            name="image"
+            // rules={[
+            //   {
+            //     required: true,
+            //     message:"Duration can not be empty"
+            //   },
+            // ]}
+          >
+            <Upload
+              action="https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload"
+              listType="picture-card"
+              fileList={fileList}
+              onPreview={handlePreview}
+              onChange={handleChange}
+            >
+              {fileList.length >= 8 ? null : uploadButton}
+            </Upload>
+          </FormItem> */}
+        </Form>
+      </Modal>
+      {/* {previewImage && (
+        <Image
+          wrapperStyle={{
+            display: "none",
+          }}
+          preview={{
+            visible: previewOpen,
+            onVisibleChange: (visible) => setPreviewOpen(visible),
+            afterOpenChange: (visible) => !visible && setPreviewImage(""),
+          }}
+          src={previewImage}
+        />
+      )} */}
     </div>
   );
 }

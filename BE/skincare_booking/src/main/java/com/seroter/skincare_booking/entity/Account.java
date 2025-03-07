@@ -185,4 +185,9 @@ public class Account implements UserDetails {
     @OneToMany(mappedBy="staff")
     private Set<Booking> assignedStaff;
 
+    @OneToMany(mappedBy = "staff")
+    private Set<Schedule> staffSchedules;
+
+    @OneToMany(mappedBy = "therapist")
+    private Set<Schedule> therapistSchedules;
 }

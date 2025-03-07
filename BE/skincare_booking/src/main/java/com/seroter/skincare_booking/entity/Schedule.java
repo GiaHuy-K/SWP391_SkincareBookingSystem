@@ -23,12 +23,6 @@ public class Schedule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long scheduleID;
 
-    @Column(nullable = false)
-    private Long therapistID;
-
-    @Column(nullable = false)
-    private Long staffID;
-
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private EmployeeTypeEnum employeeType;
@@ -44,4 +38,18 @@ public class Schedule {
 
     @Column(nullable = false, length = 50)
     private String status;
+
+    @ManyToOne
+    @JoinColumn(name = "staff_id")
+    private Account staff;
+
+    @ManyToOne
+    @JoinColumn(name = "therapist_id")
+    private Account therapist;
 }
+
+
+
+
+
+

@@ -94,4 +94,43 @@ public class AdminService {
         return newSkincareService;
     }
 
+    public SkincareService deleteSkincareService( Long id) {
+
+        Optional<SkincareService> delSkinCareService = skincareServiceRepository.findById(id);
+        delSkinCareService.get().setDeleted(true);
+        SkincareService res = skincareServiceRepository.save(delSkinCareService.get());
+
+        return res;
+    }
+
+    public SkincareService updateSkincareService(Long id, SkincareService skincareServiceRequest) {
+        Optional<SkincareService> existingSkincareService = skincareServiceRepository.findById(id);
+
+
+        if (existingSkincareService.isPresent()) {
+            SkincareService skincareServiceToUpdate = existingSkincareService.get();
+
+
+            if (skincareServiceRequest.getName() != null) {
+                skincareServiceToUpdate.setName(skincareServiceRequest.getName());
+            }
+            if (skincareServiceRequest.getDescription() != null) {
+                skincareServiceToUpdate.setDescription(skincareServiceRequest.getDescription());
+            }
+            if (skincareServiceRequest.getPrice() != null) {
+                skincareServiceToUpdate.setPrice(skincareServiceRequest.getPrice());
+            }
+            if (skincareServiceRequest.getDuration() != null) {
+                skincareServiceToUpdate.setDuration(skincareServiceRequest.getDuration());
+            }
+
+            // Save and return the updated SkincareService
+            return skincareServiceRepository.save(skincareServiceToUpdate);
+        } else {
+            throw new EntityNotFound("SkincareService with ID " + id + " not found");
+        }
+    }
+
+
+
 }

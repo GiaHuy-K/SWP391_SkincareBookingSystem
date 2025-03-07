@@ -8,10 +8,7 @@ import com.seroter.skincare_booking.service.AuthenticationService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 
@@ -46,4 +43,17 @@ public class AdminAPI {
         SkincareService newSkincareService = this.adminService.createSkincareService(skincareService);
         return ResponseEntity.ok(newSkincareService);
     }
+
+    @DeleteMapping("skinCareService/{id}")
+    public ResponseEntity deleteResponseEntity(@PathVariable Long  id) {
+        SkincareService skincareService1 = this.adminService.deleteSkincareService(id);
+        return  ResponseEntity.ok(skincareService1);
+    }
+
+    @PutMapping("skinCareService/{id}")
+    public ResponseEntity updateSkinCareService(@PathVariable Long id, @RequestBody @Valid SkincareService skincareServiceRequest) {
+        SkincareService updatedSkincareService = this.adminService.updateSkincareService(id, skincareServiceRequest);
+        return ResponseEntity.ok(updatedSkincareService);
+    }
+
 }

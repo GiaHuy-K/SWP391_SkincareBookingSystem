@@ -61,8 +61,8 @@ function ManageServices() {
   const columns = [
     {
       title: "Id",
-      dataIndex: "id",
-      key: "id",
+      dataIndex: "skincare_service_id",
+      key: "skincare_service_id",
     },
     {
       title: "Name",
@@ -123,7 +123,7 @@ function ManageServices() {
 
   // Delete service
   const handleDeleteSevice = async (id) => {
-    await api.delete(`/services/${id}`);
+    await api.delete(`/admin/skinCareService/${id}`);
     toast.success("Succesfully delete service");
     fetchServices();
   };
@@ -131,7 +131,7 @@ function ManageServices() {
   const fetchServices = async () => {
     setIsLoading(true);
     try {
-      const response = await api.get("/services");
+      const response = await api.get("/admin/skinCareService");
       console.log(response.data);
       setServicesList(response.data);
     } catch (error) {
@@ -164,11 +164,14 @@ function ManageServices() {
     // }
     if (values.id) {
       //udpate
-      const response = await api.put(`/services/${values.id}`, values);
+      const response = await api.put(
+        `/admin/skinCareService/${values.id}`,
+        values
+      );
       toast.success("Successfully edit service");
     } else {
       //create
-      const response = await api.post("/services", values);
+      const response = await api.post("/admin/skinCareService", values);
       toast.success("Successfully create new service");
     }
     handleCloseModal();
@@ -205,7 +208,7 @@ function ManageServices() {
           form={formData}
           onFinish={handleSumbitForm}
         >
-          <FormItem label="Id" name="id" hidden>
+          <FormItem label="Id" name="skincare_service_id" hidden>
             <Input></Input>
           </FormItem>
           <FormItem

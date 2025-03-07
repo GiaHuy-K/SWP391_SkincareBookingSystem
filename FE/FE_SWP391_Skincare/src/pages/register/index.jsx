@@ -86,25 +86,10 @@ const RegisterPage = () => {
         else delete newErrors.username;
         break;
 
-      case "password":
-        if (!value) newErrors.password = "Password is required";
-        else if (value.length < 8)
-          newErrors.password = "Password must be at least 8 characters";
-        else if (!/(?=.*[A-Z])/.test(value))
-          newErrors.password = "Include at least one uppercase letter";
-        else if (!/(?=.*[a-z])/.test(value))
-          newErrors.password = "Include at least one lowercase letter";
-        else if (!/(?=.*[0-9])/.test(value))
-          newErrors.password = "Include at least one number";
-        else if (!/(?=.*[!@#$%^&*])/.test(value))
-          newErrors.password = "Include at least one special character";
-        else delete newErrors.password;
-        break;
-
       case "phone":
         if (!value) newErrors.phone = "Phone number is required";
-        else if (!/^[0-9]{10}$/.test(value))
-          newErrors.phone = "Phone must be 10 digits";
+        else if (!/^0[0-9]{9}$/.test(value))
+          newErrors.phone = "Phone must start with 0 and be 10 digits";
         else delete newErrors.phone;
         break;
 
@@ -112,6 +97,15 @@ const RegisterPage = () => {
         if (!value)
           newErrors.terms = "You must accept the terms and conditions";
         else delete newErrors.terms;
+        break;
+
+      case "password":
+        if (!value) newErrors.password = "Password is required";
+        else if (value.length < 8)
+          newErrors.password = "Password must be at least 8 characters";
+        else if (!/(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])/.test(value))
+          newErrors.password = "Password must contain at least one uppercase letter, one lowercase letter, and one number";
+        else delete newErrors.password;
         break;
 
       default:
@@ -151,8 +145,8 @@ const RegisterPage = () => {
         return "bg-yellow-400";
       case 4:
         return "bg-green-500";
-      case 5:
-        return "bg-green-400";
+      // case 5:
+      //   return "bg-green-400";
       default:
         return "bg-gray-200";
     }

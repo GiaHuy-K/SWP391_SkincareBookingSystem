@@ -55,13 +55,13 @@ const LoginPage = () => {
           console.log('Token:', response.data.token);
           console.log('Role:', response.data.role);
           
-          const { token, role } = response.data;
+          const { token, roleEnum } = response.data;
           localStorage.setItem('token', token);
           toast.success('Successfully login!');
           
-          if (role === 'ADMIN') {
+          if (roleEnum === 'ADMIN') {
             navigate('/dashboard');
-          } else if (role === 'CUSTOMER') {
+          } else if (roleEnum === 'CUSTOMER') {
             navigate('/');
           }
         } else {

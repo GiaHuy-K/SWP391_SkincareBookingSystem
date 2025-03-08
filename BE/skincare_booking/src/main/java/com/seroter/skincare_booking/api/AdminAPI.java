@@ -65,9 +65,16 @@ public class AdminAPI {
         SkincareService updatedSkincareService = this.adminService.updateSkincareService(id, skincareServiceRequest);
         return ResponseEntity.ok(updatedSkincareService);
     }
-    @GetMapping("skinCareService/{id}")
-    public  ResponseEntity getSkincareService(@RequestParam Long id) {
+
+    @GetMapping("skinCareServiceDetail/{id}")
+    public  ResponseEntity getSkincareServiceDetail(@RequestParam Long id) {
         List<SkincareServiceResponse> skincareServiceList = adminService.getSkincareServiceById(id);
+        return ResponseEntity.ok(skincareServiceList);
+    }
+
+    @GetMapping("skinCareServiceAll")
+    public  ResponseEntity getSkincareService() {
+        List<SkincareServiceResponse> skincareServiceList = adminService.getSkincareService();
         return ResponseEntity.ok(skincareServiceList);
     }
 

@@ -1,9 +1,13 @@
 import axios from "axios";
 
 const api = axios.create({
+  //api deploy
     // baseURL: 'http://222.255.117.200:8080/api'
 
+  //api local
     baseURL: 'http://localhost:8080/api'
+    
+  //api test
 
     // baseURL:"https://67c7f701c19eb8753e7b8e9f.mockapi.io/"
 });

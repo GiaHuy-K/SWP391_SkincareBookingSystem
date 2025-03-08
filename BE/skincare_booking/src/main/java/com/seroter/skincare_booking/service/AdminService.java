@@ -95,6 +95,22 @@ public class AdminService {
             return responses;
     }
 
+    public List<SkincareServiceResponse> getSkincareService() {
+        List<SkincareService> skincareServices = skincareServiceRepository.findAll();
+        List<SkincareServiceResponse> responses = new ArrayList<>();
+        for (SkincareService skincareService : skincareServices) {
+            SkincareServiceResponse skincareServiceResponse = new SkincareServiceResponse();
+            skincareServiceResponse.setId(skincareService.getId());
+            skincareServiceResponse.setName(skincareService.getName());
+            skincareServiceResponse.setDescription(skincareService.getDescription());
+            skincareServiceResponse.setPrice(skincareService.getPrice());
+            skincareServiceResponse.setDuration(skincareService.getDuration());
+            responses.add(skincareServiceResponse);
+        }
+
+        return responses;
+    }
+
     public List<CustomerRegistrationResponse> getAccountByRole(RoleEnum role) {
 //        RoleEnum roleEnum = getRoleEnum(role);
         List<Account> accounts = authenticationRepository.findAllByRoleEnum(role);

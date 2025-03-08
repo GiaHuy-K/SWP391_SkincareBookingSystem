@@ -9,12 +9,9 @@ import com.seroter.skincare_booking.model.response.CustomerRegistrationResponse;
 import com.seroter.skincare_booking.model.response.SkincareServiceResponse;
 import com.seroter.skincare_booking.repository.AuthenticationRepository;
 import com.seroter.skincare_booking.repository.SkincareServiceRepository;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.management.relation.Role;
 import java.util.*;
 
 @Service
@@ -83,6 +80,21 @@ public class AdminService {
         }
     }
 
+    public List<SkincareServiceResponse> getSkincareServiceById(Long id) {
+        Optional<SkincareService> skincareServices = skincareServiceRepository.findById(id);
+        List<SkincareServiceResponse> responses = new ArrayList<>();
+        SkincareService skincareService = skincareServices.get();
+            SkincareServiceResponse skincareServiceResponse = new SkincareServiceResponse();
+            skincareServiceResponse.setId(skincareService.getId());
+            skincareServiceResponse.setName(skincareService.getName());
+            skincareServiceResponse.setDescription(skincareService.getDescription());
+            skincareServiceResponse.setPrice(skincareService.getPrice());
+            skincareServiceResponse.setDuration(skincareService.getDuration());
+            responses.add(skincareServiceResponse);
+
+            return responses;
+    }
+
     public List<CustomerRegistrationResponse> getAccountByRole(RoleEnum role) {
 //        RoleEnum roleEnum = getRoleEnum(role);
         List<Account> accounts = authenticationRepository.findAllByRoleEnum(role);
@@ -99,14 +111,14 @@ public class AdminService {
         return responses;
     }
 
-    public RoleEnum getRoleEnum(String role) {
-        return switch (role) {
-            case "STAFF" -> RoleEnum.STAFF;
-            case "THERAPIST" -> RoleEnum.THERAPIST;
-            case "ADMIN" -> RoleEnum.ADMIN;
-            case "CUSTOMER" -> RoleEnum.CUSTOMER;
-            default -> null;
-        };
-    }
+//    public RoleEnum getRoleEnum(String role) {
+//        return switch (role) {
+//            case "STAFF" -> RoleEnum.STAFF;
+//            case "THERAPIST" -> RoleEnum.THERAPIST;
+//            case "ADMIN" -> RoleEnum.ADMIN;
+//            case "CUSTOMER" -> RoleEnum.CUSTOMER;
+//            default -> null;
+//        };
+//    }
 
 }

@@ -14,11 +14,11 @@ import {
 import FormItem from "antd/es/form/FormItem";
 import { useForm } from "antd/es/form/Form";
 import { PlusOutlined } from "@ant-design/icons";
+import { getSkinCareServices } from "../../services/api.skincareservices";
 // import uploadFile from "../../utils/upload";
 
 function ManageServices() {
   const [servicesList, setServicesList] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
   const [formData] = useForm();
   const [isOpen, setOpen] = useState(false);
   // const [previewOpen, setPreviewOpen] = useState(false);
@@ -61,8 +61,8 @@ function ManageServices() {
   const columns = [
     {
       title: "Id",
-      dataIndex: "skincare_service_id",
-      key: "skincare_service_id",
+      dataIndex: "id",
+      key: "id",
     },
     {
       title: "Name",
@@ -123,31 +123,24 @@ function ManageServices() {
 
   // Delete service
   const handleDeleteSevice = async (id) => {
-    await api.delete(`/admin/skinCareService/${id}`);
-    toast.success("Succesfully delete service");
-    fetchServices();
+    try {
+      await api.delete(`/admin/skinCareService/${id}`);
+      toast.success("Successfully delete service");
+      fetchServices();
+    } catch (error) {
+      toast.error("Failed to delete service: " + error.message);
+    }
   };
   // Fetch services
   const fetchServices = async () => {
-    setIsLoading(true);
-    try {
-      const response = await api.get("/admin/skinCareService");
-      console.log(response.data);
-      setServicesList(response.data);
-    } catch (error) {
-      toast.error("Failed to fetch services");
-    } finally {
-      setIsLoading(false);
-    }
+    const data = await getSkinCareServices();
+    setServicesList(data);
   };
 
   useEffect(() => {
     fetchServices();
   }, []);
 
-  // Handle form input changes
-
-  // Create/Update service
 
   // Modal handlers
   const handleOpenModal = () => {
@@ -157,26 +150,20 @@ function ManageServices() {
     setOpen(false);
   };
   const handleSumbitForm = async (values) => {
-    console.log(values);
-    // if(values.image){
-    //  const url =  await uploadFile(values.image.file.originFileObj);
-    //  values.image = url;
-    // }
-    if (values.id) {
-      //udpate
-      const response = await api.put(
-        `/admin/skinCareService/${values.id}`,
-        values
-      );
-      toast.success("Successfully edit service");
-    } else {
-      //create
-      const response = await api.post("/admin/skinCareService", values);
-      toast.success("Successfully create new service");
+    try {
+      if (values.id) {
+        await api.put(`/admin/skinCareService/${values.id}`, values);
+        toast.success("Successfully edit service");
+      } else {
+        await api.post("/admin/skinCareService", values);
+        toast.success("Successfully create new service");
+      }
+      handleCloseModal();
+      fetchServices();
+      formData.resetFields();
+    } catch (error) {
+      toast.error("Failed to save service: " + error.message);
     }
-    handleCloseModal();
-    fetchServices();
-    formData.resetFields();
   };
 
   return (
@@ -193,11 +180,10 @@ function ManageServices() {
       >
         Add new service
       </Button>
-      <Table dataSource={servicesList} columns={columns} />;
+      <Table dataSource={servicesList} columns={columns} />
       <Modal
         title="Create new service"
         open={isOpen}
-        onClose={handleCloseModal}
         onCancel={handleCloseModal}
         onOk={() => formData.submit()}
       >
@@ -208,7 +194,7 @@ function ManageServices() {
           form={formData}
           onFinish={handleSumbitForm}
         >
-          <FormItem label="Id" name="skincare_service_id" hidden>
+          <FormItem label="Id" name="id" hidden>
             <Input></Input>
           </FormItem>
           <FormItem
@@ -243,9 +229,23 @@ function ManageServices() {
                 required: true,
                 message: "Price can not be empty",
               },
+              {
+                type: 'number',
+                min: 0,
+                message: "Price must be a positive number",
+              },
+              {
+                transform: (value) => Number(value),
+                validator: (_, value) => {
+                  if (isNaN(value)) {
+                    return Promise.reject('Price must be a valid number');
+                  }
+                  return Promise.resolve();
+                },
+              }
             ]}
           >
-            <Input></Input>
+            <Input type="number" min={0} />
           </FormItem>
           <FormItem
             label="Duration"
@@ -255,9 +255,23 @@ function ManageServices() {
                 required: true,
                 message: "Duration can not be empty",
               },
+              {
+                type: 'number',
+                min: 1,
+                message: "Duration must be at least 1 minute",
+              },
+              {
+                transform: (value) => Number(value),
+                validator: (_, value) => {
+                  if (isNaN(value)) {
+                    return Promise.reject('Duration must be a valid number');
+                  }
+                  return Promise.resolve();
+                },
+              }
             ]}
           >
-            <Input></Input>
+            <Input type="number" min={1} />
           </FormItem>
           {/* image */}
           {/* <FormItem

@@ -62,7 +62,7 @@ const LoginPage = () => {
           if (roleEnum === 'ADMIN') {
             navigate('/dashboard');
           } else if (roleEnum === 'CUSTOMER') {
-            navigate('/');
+            navigate('/http://222.255.117.200/');
           }
         } else {
           console.log('No data in response');

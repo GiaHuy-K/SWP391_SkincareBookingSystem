@@ -2,9 +2,6 @@ import React, { useState } from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import {
   DesktopOutlined,
-  FileOutlined,
-  PieChartOutlined,
-  TeamOutlined,
   UserOutlined,
 } from '@ant-design/icons';
 import { Breadcrumb, Layout, Menu, theme } from 'antd';
@@ -21,7 +18,6 @@ function getItem(label, key, icon, children) {
 }
 
 const items = [
-  getItem('Overview', 'overview', <PieChartOutlined />),
   getItem('Services', 'services', <DesktopOutlined />),
   getItem('Therapist', 'therapist', <UserOutlined />),
   getItem('User', 'user', <UserOutlined />),
@@ -87,7 +83,7 @@ const AdminLayout = () => {
           </div>
         </Content>
         <Footer style={{ textAlign: 'center' }}>
-          Ant Design ©{new Date().getFullYear()} Created by Ant UED
+          {new Date().getFullYear()}
         </Footer>
       </Layout>
     </Layout>

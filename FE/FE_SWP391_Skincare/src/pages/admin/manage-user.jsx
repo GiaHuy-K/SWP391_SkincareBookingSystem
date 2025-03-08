@@ -10,7 +10,11 @@ function ManageUser() {
   //fetch account users
   const fetchUsers = async () => {
     console.log("fetch ne em");
-    const response = await api.get("/users");
+    const response = await api.get("/admin/account", {
+      params: {
+        role: "CUSTOMER"
+      }
+    });
     console.log(response.data);
     console.log("fetch xong roi ne em");
     setUserList(response.data);
@@ -29,11 +33,6 @@ function ManageUser() {
       title: "Name",
       dataIndex: "name",
       key: "name",
-    },
-    {
-      title: "Role",
-      dataIndex: "role",
-      key: "role",
     },
     {
       title: "Email",
@@ -55,56 +54,7 @@ function ManageUser() {
   return (
     <div>
       <h1>ManageUser</h1>
-      <Button onClick={handleOpenModal}>Add new user</Button>
       <Table columns={columns} dataSource={userList} />;
-      <Modal
-        title="Create new user"
-        open={isOpen}
-        onClose={handleCloseModal}
-        onCancel={handleCloseModal}
-      >
-        <Form labelCol={{
-          span: 24,
-        }}>
-        <FormItem
-            label="Name"
-            name="name"
-            rules={[
-              {
-                required: true,
-                message: "Name can not be empty",
-              },
-            ]}
-          >
-            <Input></Input>
-          </FormItem>
-          <FormItem
-            label="Role"
-            name="role"
-            rules={[
-              {
-                required: true,
-                message: "Role can not be empty",
-              },
-            ]}
-          >
-            <Input></Input>
-          </FormItem>
-          <FormItem
-            label="Email"
-            name="email"
-            rules={[
-              {
-                required: true,
-                message: "Email can not be empty",
-              },
-            ]}
-          >
-            <Input></Input>
-          </FormItem>
-
-        </Form>
-      </Modal>
     </div>
   );
 }

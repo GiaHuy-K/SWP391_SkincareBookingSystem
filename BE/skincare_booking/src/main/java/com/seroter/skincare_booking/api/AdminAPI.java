@@ -55,9 +55,9 @@ public class AdminAPI {
     }
 
     @DeleteMapping("skinCareService/{id}")
-    public ResponseEntity deleteResponseEntity(@PathVariable Long  id) {
-        SkincareService skincareService1 = this.adminService.deleteSkincareService(id);
-        return  ResponseEntity.ok(skincareService1);
+    public ResponseEntity<SkincareServiceResponse> deleteSkinCareService(@PathVariable Long id) {
+        SkincareServiceResponse response = adminService.deleteSkincareService(id);
+        return ResponseEntity.ok(response);
     }
 
     @PutMapping("skinCareService/{id}")
@@ -78,11 +78,9 @@ public class AdminAPI {
         return ResponseEntity.ok(skincareServiceList);
     }
 
-
     @GetMapping("account")
     public ResponseEntity findRole( @RequestParam RoleEnum role) {
         List<CustomerRegistrationResponse> accounts = adminService.getAccountByRole(role);
         return ResponseEntity.ok(accounts);
     }
-
 }

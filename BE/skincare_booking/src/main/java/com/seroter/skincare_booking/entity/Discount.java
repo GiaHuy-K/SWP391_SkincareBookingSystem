@@ -1,5 +1,6 @@
 package com.seroter.skincare_booking.entity;
 
+import com.seroter.skincare_booking.enums.DiscountTypeEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -32,7 +33,7 @@ public class Discount {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private DiscountType discountType;
+    private DiscountTypeEnum discountTypeEnum;
 
     @Column(nullable = false)
     private LocalDate validFrom;
@@ -40,7 +41,4 @@ public class Discount {
     @Column(nullable = false)
     private LocalDate validUntil;
 
-    public enum DiscountType {
-        PERCENTAGE, FIXED_AMOUNT
-    }
 }

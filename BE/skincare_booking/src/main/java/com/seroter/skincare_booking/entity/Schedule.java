@@ -21,6 +21,7 @@ public class Schedule {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long scheduleID;
 
     @Enumerated(EnumType.STRING)
@@ -30,11 +31,6 @@ public class Schedule {
     @Column(nullable = false)
     private LocalDate date;
 
-    @Column(nullable = false)
-    private LocalTime startTime;
-
-    @Column(nullable = false)
-    private LocalTime endTime;
 
     @Column(nullable = false, length = 50)
     private String status;
@@ -46,6 +42,13 @@ public class Schedule {
     @ManyToOne
     @JoinColumn(name = "therapist_id")
     private Account therapist;
+
+    @ManyToOne
+    @JoinColumn(name = "slot_id")
+    private Slot slot;
+
+    @OneToOne(mappedBy = "schedule")
+    private Booking booking;
 }
 
 

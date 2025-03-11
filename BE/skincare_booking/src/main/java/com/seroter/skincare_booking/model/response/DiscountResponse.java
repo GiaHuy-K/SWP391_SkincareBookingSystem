@@ -1,6 +1,5 @@
 package com.seroter.skincare_booking.model.response;
 
-import com.seroter.skincare_booking.entity.Discount;
 import com.seroter.skincare_booking.enums.DiscountTypeEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,7 +21,7 @@ public class DiscountResponse {
         private LocalDateTime validFrom;
         private LocalDateTime validUntil;
 
-    }
+}
 
 
 

@@ -43,13 +43,22 @@ public class AdminService {
         return skincareServiceResponse;
     }
 
-    public SkincareService deleteSkincareService(Long id) {
-
-        Optional<SkincareService> delSkinCareService = skincareServiceRepository.findById(id);
-        delSkinCareService.get().setDeleted(true);
-        SkincareService res = skincareServiceRepository.save(delSkinCareService.get());
-
-        return res;
+    public SkincareServiceResponse deleteSkincareService(Long id) {
+        Optional<SkincareService> optionalSkincareService = skincareServiceRepository.findById(id);
+        if (optionalSkincareService.isPresent()) {
+            SkincareService skincareService = optionalSkincareService.get();
+            skincareService.setIsDeleted(true); // Sử dụng isDeleted để đánh dấu xóa mềm
+            SkincareService updatedService = skincareServiceRepository.save(skincareService); // Lưu thay đổi
+            SkincareServiceResponse response = new SkincareServiceResponse();
+            response.setId(updatedService.getId());
+            response.setName(updatedService.getName());
+            response.setDescription(updatedService.getDescription());
+            response.setPrice(updatedService.getPrice());
+            response.setDuration(updatedService.getDuration());
+            return response;
+        } else {
+            throw new RuntimeException("SkincareService with ID " + id + " not found");
+        }
     }
 
     public SkincareService updateSkincareService(Long id, SkincareService skincareServiceRequest) {

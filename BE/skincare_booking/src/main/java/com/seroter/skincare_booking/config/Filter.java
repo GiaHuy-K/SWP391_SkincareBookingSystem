@@ -38,7 +38,8 @@ public class Filter extends OncePerRequestFilter {
             "/swagger-resources/**",
             "/api/login",
             "/api/register",
-            "/api/admin/**"
+            "/api/admin/**",
+            "/api/service/**"
     );
 
     boolean isPermitted(HttpServletRequest request){

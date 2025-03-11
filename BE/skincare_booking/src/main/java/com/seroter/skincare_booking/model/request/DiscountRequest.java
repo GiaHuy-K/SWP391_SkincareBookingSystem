@@ -9,8 +9,6 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
 public class DiscountRequest {
     private String code;
     private String description;

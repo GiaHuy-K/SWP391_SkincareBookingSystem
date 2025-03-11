@@ -4,97 +4,46 @@ import com.seroter.skincare_booking.entity.Account;
 import com.seroter.skincare_booking.entity.SkincareService;
 import com.seroter.skincare_booking.enums.RoleEnum;
 import com.seroter.skincare_booking.exception.EntityNotFound;
-import com.seroter.skincare_booking.model.request.AccountRequest;
-import com.seroter.skincare_booking.model.request.AdminAccountRequest;
-import com.seroter.skincare_booking.model.request.StaffAccountRequest;
-import com.seroter.skincare_booking.model.request.TherapistAccountRequest;
+import com.seroter.skincare_booking.model.request.*;
+import com.seroter.skincare_booking.model.response.CustomerRegistrationResponse;
+import com.seroter.skincare_booking.model.response.SkincareServiceResponse;
 import com.seroter.skincare_booking.repository.AuthenticationRepository;
 import com.seroter.skincare_booking.repository.SkincareServiceRepository;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class AdminService {
 
-    @Autowired
-    PasswordEncoder passwordEncoder;
     @Autowired
     AuthenticationRepository authenticationRepository;
     @Autowired
     SkincareServiceRepository skincareServiceRepository;
 
 
-    public Account register( AdminAccountRequest accountRequest) {
 
-        Account account = new Account();
-        account.setUsername(accountRequest.getUsername());
-        account.setPassword(passwordEncoder.encode(accountRequest.getPassword()));
-        account.setFullName(accountRequest.getFullName());
-        account.setEmail(accountRequest.getEmail());
-        account.setPhone(accountRequest.getPhone());
-        account.setRoleEnum(RoleEnum.ADMIN);
-        Account newAccount = authenticationRepository.save(account);
-        return newAccount;
-    }
-
-    public Account registerTherapist(TherapistAccountRequest accountRequest) {
-
-        Account account = new Account();
-        account.setUsername(accountRequest.getUsername());
-        account.setPassword(passwordEncoder.encode(accountRequest.getPassword()));
-        account.setFullName(accountRequest.getFullName());
-        account.setEmail(accountRequest.getEmail());
-        account.setPhone(accountRequest.getPhone());
-        account.setQualification(accountRequest.getQualification());
-        account.setExperience(accountRequest.getExperience());
-        account.setRoleEnum(RoleEnum.THERAPIST);
-        Set<SkincareService> skincareServices = new HashSet<>();
-        Set<Long> skincareServiceIds = accountRequest.getSkinCareServiceIds();
-        for (Long skincareServiceId : skincareServiceIds) {
-            Optional<SkincareService> skincareService = Optional.ofNullable(skincareServiceRepository.findById(skincareServiceId).orElseThrow(() -> new EntityNotFound("ID do not exist")));
-            skincareServices.add(skincareService.get());
-
-        }
-        account.setSkincareServices(skincareServices);
-        Account newAccount = authenticationRepository.save(account);
-
-
-        return newAccount;
-    }
-
-    public Account registerStaff(StaffAccountRequest accountRequest) {
-
-        Account account = new Account();
-        account.setUsername(accountRequest.getUsername());
-        account.setPassword(passwordEncoder.encode(accountRequest.getPassword()));
-        account.setFullName(accountRequest.getFullName());
-        account.setEmail(accountRequest.getEmail());
-        account.setPhone(accountRequest.getPhone());
-        account.setRoleEnum(RoleEnum.STAFF);
-        Account newAccount = authenticationRepository.save(account);
-        return newAccount;
-    }
-
-    public SkincareService createSkincareService( SkincareService skincareService) {
+    public SkincareServiceResponse createSkincareService(SkincareRequest skincareServiceRequest) {
 
         SkincareService newSkincareService = new SkincareService();
-        newSkincareService.setId(skincareService.getId());
-        newSkincareService.setName(skincareService.getName());
-        newSkincareService.setDescription(skincareService.getDescription());
-        newSkincareService.setPrice(skincareService.getPrice());
-        newSkincareService.setDuration(skincareService.getDuration());
+        newSkincareService.setName(skincareServiceRequest.getName());
+        newSkincareService.setDescription(skincareServiceRequest.getDescription());
+        newSkincareService.setPrice(skincareServiceRequest.getPrice());
+        newSkincareService.setDuration(skincareServiceRequest.getDuration());
 
         newSkincareService = skincareServiceRepository.save(newSkincareService);
-        return newSkincareService;
+        SkincareServiceResponse skincareServiceResponse = new SkincareServiceResponse();
+        skincareServiceResponse.setName(newSkincareService.getName());
+        skincareServiceResponse.setDescription(newSkincareService.getDescription());
+        skincareServiceResponse.setPrice(newSkincareService.getPrice());
+        skincareServiceResponse.setDuration(newSkincareService.getDuration());
+        skincareServiceResponse.setId(newSkincareService.getId());
+
+        return skincareServiceResponse;
     }
 
-    public SkincareService deleteSkincareService( Long id) {
+    public SkincareService deleteSkincareService(Long id) {
 
         Optional<SkincareService> delSkinCareService = skincareServiceRepository.findById(id);
         delSkinCareService.get().setDeleted(true);
@@ -131,6 +80,61 @@ public class AdminService {
         }
     }
 
+    public List<SkincareServiceResponse> getSkincareServiceById(Long id) {
+        Optional<SkincareService> skincareServices = skincareServiceRepository.findById(id);
+        List<SkincareServiceResponse> responses = new ArrayList<>();
+        SkincareService skincareService = skincareServices.get();
+            SkincareServiceResponse skincareServiceResponse = new SkincareServiceResponse();
+            skincareServiceResponse.setId(skincareService.getId());
+            skincareServiceResponse.setName(skincareService.getName());
+            skincareServiceResponse.setDescription(skincareService.getDescription());
+            skincareServiceResponse.setPrice(skincareService.getPrice());
+            skincareServiceResponse.setDuration(skincareService.getDuration());
+            responses.add(skincareServiceResponse);
 
+            return responses;
+    }
+
+    public List<SkincareServiceResponse> getSkincareService() {
+        List<SkincareService> skincareServices = skincareServiceRepository.findAll();
+        List<SkincareServiceResponse> responses = new ArrayList<>();
+        for (SkincareService skincareService : skincareServices) {
+            SkincareServiceResponse skincareServiceResponse = new SkincareServiceResponse();
+            skincareServiceResponse.setId(skincareService.getId());
+            skincareServiceResponse.setName(skincareService.getName());
+            skincareServiceResponse.setDescription(skincareService.getDescription());
+            skincareServiceResponse.setPrice(skincareService.getPrice());
+            skincareServiceResponse.setDuration(skincareService.getDuration());
+            responses.add(skincareServiceResponse);
+        }
+
+        return responses;
+    }
+
+    public List<CustomerRegistrationResponse> getAccountByRole(RoleEnum role) {
+//        RoleEnum roleEnum = getRoleEnum(role);
+        List<Account> accounts = authenticationRepository.findAllByRoleEnum(role);
+        List<CustomerRegistrationResponse> responses = new ArrayList<>();
+        for (Account account : accounts) {
+            CustomerRegistrationResponse customerRegistrationResponse = new CustomerRegistrationResponse();
+            customerRegistrationResponse.setUsername(account.getUsername());
+            customerRegistrationResponse.setId(account.getId());
+            customerRegistrationResponse.setFullName(account.getFullName());
+            customerRegistrationResponse.setEmail(account.getEmail());
+            customerRegistrationResponse.setRoleEnum(account.getRoleEnum());
+            responses.add(customerRegistrationResponse);
+        }
+        return responses;
+    }
+
+//    public RoleEnum getRoleEnum(String role) {
+//        return switch (role) {
+//            case "STAFF" -> RoleEnum.STAFF;
+//            case "THERAPIST" -> RoleEnum.THERAPIST;
+//            case "ADMIN" -> RoleEnum.ADMIN;
+//            case "CUSTOMER" -> RoleEnum.CUSTOMER;
+//            default -> null;
+//        };
+//    }
 
 }

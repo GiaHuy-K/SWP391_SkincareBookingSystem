@@ -38,6 +38,8 @@ public class SkincareService {
     @JsonIgnore
     private boolean isDeleted = false;
 
+    @ManyToMany(mappedBy = "skincareServices")
+    private Set<Booking> bookings;
 
 
 }

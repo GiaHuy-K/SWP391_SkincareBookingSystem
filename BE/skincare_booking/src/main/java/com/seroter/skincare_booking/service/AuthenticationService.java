@@ -3,17 +3,20 @@ package com.seroter.skincare_booking.service;
 import com.seroter.skincare_booking.entity.Account;
 
 
+import com.seroter.skincare_booking.entity.SkincareService;
 import com.seroter.skincare_booking.enums.RoleEnum;
 import com.seroter.skincare_booking.exception.AuthorizeException;
 import com.seroter.skincare_booking.exception.DuplicateEntity;
-import com.seroter.skincare_booking.model.request.AccountRequest;
-import com.seroter.skincare_booking.model.request.AuthenticationRequest;
+import com.seroter.skincare_booking.exception.EntityNotFound;
+import com.seroter.skincare_booking.model.request.*;
 import com.seroter.skincare_booking.model.response.AuthenticationResponse;
 import com.seroter.skincare_booking.model.response.CustomerRegistrationResponse;
 import com.seroter.skincare_booking.repository.AuthenticationRepository;
+import com.seroter.skincare_booking.repository.SkincareServiceRepository;
 import com.seroter.skincare_booking.service.TokenService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,17 +25,25 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
+
 @Service
 public class AuthenticationService implements UserDetailsService {
 
     @Autowired
     AuthenticationRepository authenticationRepository;
+
     @Autowired
     PasswordEncoder passwordEncoder;
+
     @Autowired
     AuthenticationManager authenticationManager;
     @Autowired
     TokenService tokenService;
+    @Autowired
+    private SkincareServiceRepository skincareServiceRepository;
 
     public CustomerRegistrationResponse register(@Valid AccountRequest accountRequest) {
 //        // => pass vòng validation
@@ -109,5 +120,56 @@ public class AuthenticationService implements UserDetailsService {
         authenticationResponse.setRoleEnum(account.getRoleEnum());
 
         return authenticationResponse;
+    }
+
+    public Account register(AdminAccountRequest accountRequest) {
+
+        Account account = new Account();
+        account.setUsername(accountRequest.getUsername());
+        account.setPassword(passwordEncoder.encode(accountRequest.getPassword()));
+        account.setFullName(accountRequest.getFullName());
+        account.setEmail(accountRequest.getEmail());
+        account.setPhone(accountRequest.getPhone());
+        account.setRoleEnum(RoleEnum.ADMIN);
+        Account newAccount = authenticationRepository.save(account);
+        return newAccount;
+    }
+
+    public Account registerTherapist(TherapistAccountRequest accountRequest) {
+
+        Account account = new Account();
+        account.setUsername(accountRequest.getUsername());
+        account.setPassword(passwordEncoder.encode(accountRequest.getPassword()));
+        account.setFullName(accountRequest.getFullName());
+        account.setEmail(accountRequest.getEmail());
+        account.setPhone(accountRequest.getPhone());
+        account.setQualification(accountRequest.getQualification());
+        account.setExperience(accountRequest.getExperience());
+        account.setRoleEnum(RoleEnum.THERAPIST);
+        Set<SkincareService> skincareServices = new HashSet<>();
+        Set<Long> skincareServiceIds = accountRequest.getSkinCareServiceIds();
+        for (Long skincareServiceId : skincareServiceIds) {
+            Optional<SkincareService> skincareService = Optional.ofNullable(skincareServiceRepository.findById(skincareServiceId).orElseThrow(() -> new EntityNotFound("ID do not exist")));
+            skincareServices.add(skincareService.get());
+
+        }
+        account.setSkincareServices(skincareServices);
+        Account newAccount = authenticationRepository.save(account);
+
+
+        return newAccount;
+    }
+
+    public Account registerStaff(StaffAccountRequest accountRequest) {
+
+        Account account = new Account();
+        account.setUsername(accountRequest.getUsername());
+        account.setPassword(passwordEncoder.encode(accountRequest.getPassword()));
+        account.setFullName(accountRequest.getFullName());
+        account.setEmail(accountRequest.getEmail());
+        account.setPhone(accountRequest.getPhone());
+        account.setRoleEnum(RoleEnum.STAFF);
+        Account newAccount = authenticationRepository.save(account);
+        return newAccount;
     }
 }

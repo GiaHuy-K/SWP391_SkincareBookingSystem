@@ -42,4 +42,8 @@ public class Booking {
     @ManyToOne
     @JoinColumn(name = "staff_id")
     private Account staff;
+
+    @OneToOne
+    @JoinColumn(name = "schedule_id",referencedColumnName = "id")
+    private Schedule schedule;
 }

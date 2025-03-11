@@ -190,4 +190,7 @@ public class Account implements UserDetails {
 
     @OneToMany(mappedBy = "therapist")
     private Set<Schedule> therapistSchedules;
+
+    @OneToMany(mappedBy = "admin")
+    private Set<Slot> slots;
 }

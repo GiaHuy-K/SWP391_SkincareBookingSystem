@@ -35,11 +35,13 @@ public class SkincareService {
     @Column(nullable = false)
     private Integer duration;
 
-    @JsonIgnore
+    @Column(nullable = false)
     private boolean isDeleted = false;
 
     @ManyToMany(mappedBy = "skincareServices")
     private Set<Booking> bookings;
 
-
+    public void setIsDeleted(boolean b) {
+        this.isDeleted = b; // Cập nhật giá trị isDeleted
+    }
 }

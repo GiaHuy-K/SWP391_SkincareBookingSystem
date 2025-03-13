@@ -16,6 +16,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Slot {
+    public String getName;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -31,6 +32,4 @@ public class Slot {
 
     @OneToMany(mappedBy = "slot")
     private Set<Schedule> schedules;
-
-
 }

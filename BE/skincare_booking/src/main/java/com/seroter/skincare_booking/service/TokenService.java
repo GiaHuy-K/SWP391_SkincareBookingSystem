@@ -29,7 +29,7 @@ public class TokenService {
         String token = Jwts.builder()
                 .subject(account.getId()+"")  //Thông tin lưu trong token
                 .issuedAt(new Date(System.currentTimeMillis())) //Thời gian tạo token
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24)) //Thời gian token đc duy trì
+                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 3)) //Thời gian token đc duy trì
                 .signWith(getSigninKey())
                 .compact();
         return token;

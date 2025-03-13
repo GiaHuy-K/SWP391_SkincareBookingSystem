@@ -3,39 +3,27 @@ package com.seroter.skincare_booking.entity;
 
 import com.seroter.skincare_booking.enums.PaymentStatusEnum;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Entity
-@Table(name = "payment")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Table(name = "Payment")
+@Data
 public class Payment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long paymentID;
 
-    @Column(nullable = false)
-    private Long bookingID;
-
-    @Column(nullable = false, precision = 10, scale = 2)
-    private BigDecimal amount;
-
-    @Column(nullable = false)
-    private LocalDate paymentDate;
-
-    @Column(nullable = false, length = 50)
-    private String method;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private PaymentStatusEnum status;
+    public long id = 0;
+    public Date createAt;
+    public float total;
+    public PaymentStatusEnum status = PaymentStatusEnum.PENDING;
+    @ManyToOne
+    @JoinColumn(name = "account_id")
+    public Account account;
+//    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+//    List<PaymentDetail> paymentDetails = new ArrayList<>();
 }
